@@ -1,0 +1,6 @@
+#app-container {
+  margin: 0 auto;
+  width: 320px;
+  outline: 1px solid blue;
+  background-color: aquamarine;
+}
