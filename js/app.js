@@ -1,11 +1,11 @@
 const VALUE_OF_REPOS = 5;
-const url = "https://api.github.com/search/repositories?q=";
+const URL = "https://api.github.com/";
+const endpoint = "search/repositories";
 let repoName = [];
 
-// const searchBTN = document.querySelector(".search-btn");
 const searchField = document.querySelector(".search-input");
 const reposContainer = document.querySelector(".repos-container");
-const reposFavor = document.querySelector(".repos-favourities");
+const reposFavor = document.querySelector(".repos-pinned");
 
 let inputValue = searchField.value;
 
@@ -22,36 +22,15 @@ const debounce = (fn, debounceTime) => {
   return decorator;
 };
 
-// async function getReposHandler(keyword) {
-//   if (keyword.trim().length === 0) {
-//     reposContainer.innerHTML = "";
-//     return;
-//   }
-
-//   console.log("searching...");
-
-//   const repos = await getRepos(keyword);
-//   console.log(repos);
-//   console.log(repos.items);
-
-//   const listOfRepos = createListOfRepos(repos.items, VALUE_OF_REPOS);
-//   reposContainer.innerHTML = "";
-//   reposContainer.insertAdjacentHTML("beforeend", listOfRepos);
-// }
-
 async function getRepos(value) {
   return Promise.resolve().then(async () => {
-    const response = await fetch(`${url}${value}`);
+    const response = await fetch(`${URL + endpoint}?q=${value}`);
     return await response.json();
   });
 }
 
 async function searchHandler(e) {
-  //   console.log("inputValue: ", inputValue);
   if (e.target.value.trim().length === 0) {
-    // console.log("here!");
-    // console.log("inputValue in IF: ", inputValue);
-
     reposContainer.innerHTML = "";
     return;
   }
@@ -59,8 +38,6 @@ async function searchHandler(e) {
   inputValue = e.target.value;
 
   const repos = await getRepos(inputValue);
-
-  //   console.log(repos);
 
   const listOfRepos = createListOfRepos(repos.items, VALUE_OF_REPOS);
   reposContainer.innerHTML = "";
@@ -74,8 +51,6 @@ function createListOfRepos(arr, count) {
       repoName.push(el);
     }
   });
-
-  //   console.log(repoName);
 
   const markup = repoName
     .map((item) => {
@@ -94,10 +69,10 @@ function handleAddRepoToFavourities(e) {
   const repo = repoName.filter((item) => item.id === Number(e.target.id));
 
   const repoMarkup = repo.map((item) => {
-    return `<li id=${item.id}><p>Name: ${item.name}</p>
-                        <p>Owner: ${item.owner.login}</p>
-                        <p>Stars: ${item.stargazers_count}</p>
-                        <button type='button'>Delete</button>
+    return `<li class="repo-item" id=${item.id}><p class="repo-name"><span class="repo-title">Name: </span>${item.name}</p>
+                        <p class="repo-author"><span class="repo-title">Owner: </span>${item.owner.login}</p>
+                        <p class="repo-stars"><span class="repo-title">Stars: </span>${item.stargazers_count}</p>
+                        <button class="btn repo-delete" type="button">Delete</button>
                     </li>`;
   });
 
@@ -118,7 +93,6 @@ function clearValues() {
   reposContainer.innerHTML = "";
 }
 
-// searchBTN.addEventListener("click", () => getReposHandler(inputValue));
-searchField.addEventListener("input", debounce(searchHandler, 1000));
+searchField.addEventListener("input", debounce(searchHandler, 800));
 reposContainer.addEventListener("click", handleAddRepoToFavourities);
 reposFavor.addEventListener("click", handleDeleteRepo);

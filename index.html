@@ -12,11 +12,28 @@
   </head>
   <body>
     <div id="app-container">
-      <input class="search-input" type="text" />
-      <!-- <button class="search-btn" type="button">Search Repo</button> -->
-
-      <ul class="repos-container"></ul>
-      <ul class="repos-favourities"></ul>
+      <div class="search-field">
+        <h1 class="title">Search for Repositories of Github</h1>
+        <label class="search-label" for="search-input"
+          >Input name of repositoriy:</label
+        >
+        <input
+          id="search-input"
+          class="search-input"
+          type="text"
+          autocomplete="off"
+          autofocus
+          placeholder="Type here..."
+        />
+      </div>
+      <div class="search-results">
+        <h2 class="search-results-title">search results</h2>
+        <ul class="repos-container"></ul>
+      </div>
+      <div class="pinned-container">
+        <h2 class="pinned-title">pinned repositories</h2>
+        <ul class="repos-pinned"></ul>
+      </div>
     </div>
     <script src="./js/app.js" type="module"></script>
   </body>
